@@ -11,6 +11,7 @@ namespace Taxes.Data.Entities
         public int? Month { get; set; }
         public int? Week { get; set; }
         public DateTime? Date { get; set; }
+        public decimal TaxValue { get; set; }
         public Municipality Municipality { get; set; }
         public TaxType TaxType { get; set; }
     }

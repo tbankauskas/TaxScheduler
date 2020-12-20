@@ -23,6 +23,8 @@ namespace Taxes.Data.Ef
             }
 
             modelBuilder.ApplyConfiguration(new MunicipalityConfiguration());
+            modelBuilder.ApplyConfiguration(new TaxTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TaxSchedulerConfiguration());
         }
     }
 }

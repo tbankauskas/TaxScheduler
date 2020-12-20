@@ -27,13 +27,13 @@ namespace Taxes.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("MunicipalityId");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Municipality");
                 });
@@ -46,7 +46,7 @@ namespace Taxes.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Datetime");
 
                     b.Property<int?>("Month")
                         .HasColumnType("int");
@@ -56,6 +56,10 @@ namespace Taxes.Data.Migrations
 
                     b.Property<int>("TaxTypeId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TaxValue")
+                        .HasPrecision(2, 2)
+                        .HasColumnType("decimal(2,2)");
 
                     b.Property<int?>("Week")
                         .HasColumnType("int");
@@ -75,17 +79,19 @@ namespace Taxes.Data.Migrations
             modelBuilder.Entity("Taxes.Data.Entities.TaxType", b =>
                 {
                     b.Property<int>("TaxTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
                     b.Property<string>("TypeName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("TaxTypeId");
+
+                    b.HasIndex("TypeName")
+                        .IsUnique();
 
                     b.ToTable("TaxType");
                 });

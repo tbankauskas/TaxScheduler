@@ -9,8 +9,13 @@ namespace Taxes.Data.Ef.Configurations
         public void Configure(EntityTypeBuilder<Municipality> builder)
         {
             builder
+                .Property(x => x.Name)
+                .IsRequired();
+
+            builder
                 .HasIndex(x => x.Name)
                 .IsUnique();
+            
         }
     }
 }
