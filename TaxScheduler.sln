@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxScheduler", "TaxScheduler\TaxScheduler.csproj", "{276A7AA2-401A-475B-A178-B1E73BAD513F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taxes.Data", "Taxes.Data\Taxes.Data.csproj", "{3B4B6A6E-6EB5-4A61-AA3C-C9CC4D8BDF16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{276A7AA2-401A-475B-A178-B1E73BAD513F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276A7AA2-401A-475B-A178-B1E73BAD513F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276A7AA2-401A-475B-A178-B1E73BAD513F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276A7AA2-401A-475B-A178-B1E73BAD513F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B4B6A6E-6EB5-4A61-AA3C-C9CC4D8BDF16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B4B6A6E-6EB5-4A61-AA3C-C9CC4D8BDF16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B4B6A6E-6EB5-4A61-AA3C-C9CC4D8BDF16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B4B6A6E-6EB5-4A61-AA3C-C9CC4D8BDF16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7CE66EAB-5F62-4BC5-97BA-52C233085A24}
+	EndGlobalSection
+EndGlobal
