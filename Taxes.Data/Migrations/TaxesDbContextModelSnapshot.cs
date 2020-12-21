@@ -45,8 +45,8 @@ namespace Taxes.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("Datetime");
+                    b.Property<int?>("Day")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Month")
                         .HasColumnType("int");

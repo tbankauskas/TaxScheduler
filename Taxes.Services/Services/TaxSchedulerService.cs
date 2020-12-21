@@ -22,8 +22,16 @@ namespace Taxes.Services.Services
 
         public Task AddNewTax(TaxSchedulerDto taxScheduler)
         {
-            var taxEntity = CreateTaxScheduler(taxScheduler);
+            var taxEntity = CreateOrUpdateTaxScheduler(taxScheduler);
             _dbContext.TaxSchedulers.Add(taxEntity);
+            _dbContext.SaveChangesAsync();
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateExistingTax(TaxSchedulerDto taxScheduler)
+        {
+            var taxEntity = _dbContext.TaxSchedulers.First(x => x.TaxSchedulerId == taxScheduler.TaxSchedulerId);
+            CreateOrUpdateTaxScheduler(taxScheduler, taxEntity);
             _dbContext.SaveChangesAsync();
             return Task.CompletedTask;
         }
@@ -46,7 +54,7 @@ namespace Taxes.Services.Services
             }
             else if (taxType == TaxTypeEnum.Daily)
             {
-                query = query.Where(x => x.Date == date);
+                query = query.Where(x => x.Day == date.Day && x.Month == date.Month && x.Year == date.Year);
             }
 
             var tax = await query.FirstOrDefaultAsync();
@@ -54,6 +62,7 @@ namespace Taxes.Services.Services
                 ? null
                 : new TaxSchedulerDto
                 {
+                    TaxSchedulerId = tax.TaxSchedulerId,
                     MunicipalityId = tax.MunicipalityId,
                     TaxType = (TaxTypeEnum)tax.TaxTypeId,
                     DateTime = date,
@@ -65,15 +74,16 @@ namespace Taxes.Services.Services
         {
             var result = await _dbContext.TaxSchedulers
                 .Where(x => x.Municipality.Name == munucipality &&
-                            (x.Date == date
+                            (x.Day == date.Day && x.Month == date.Month && x.Year == date.Year
                              || x.Month == date.Month && x.Year == date.Year
                              || x.Week == GetWeekOfYear(date) && x.Year == date.Year
-                             || x.Year == date.Year && x.Date == null && x.Month == null && x.Week == null))
+                             || x.Year == date.Year && x.Day == null && x.Month == null && x.Week == null))
                 .OrderBy(x => x.TaxType.Priority).FirstOrDefaultAsync();
             if (result == null)
                 return null;
             return new TaxSchedulerDto
             {
+                TaxSchedulerId = result.TaxSchedulerId,
                 TaxType = (TaxTypeEnum)result.TaxTypeId,
                 MunicipalityId = result.MunicipalityId,
                 DateTime = date,
@@ -81,15 +91,20 @@ namespace Taxes.Services.Services
             };
         }
 
-        private TaxScheduler CreateTaxScheduler(TaxSchedulerDto taxScheduler)
+        private TaxScheduler CreateOrUpdateTaxScheduler(TaxSchedulerDto taxScheduler, TaxScheduler taxEntity = null)
         {
-            var taxEntity = new TaxScheduler
+            if (taxEntity == null)
             {
-                MunicipalityId = taxScheduler.MunicipalityId,
-                Year = taxScheduler.DateTime.Year,
-                TaxTypeId = (int)taxScheduler.TaxType,
-                TaxValue = taxScheduler.TaxValue
-            };
+                taxEntity = new TaxScheduler
+                {
+                    MunicipalityId = taxScheduler.MunicipalityId,
+                    Year = taxScheduler.DateTime.Year,
+                    TaxTypeId = (int)taxScheduler.TaxType,
+                    TaxValue = taxScheduler.TaxValue
+                };
+            }
+
+            taxEntity.TaxValue = taxScheduler.TaxValue;
 
             if (taxScheduler.TaxType == TaxTypeEnum.Monthly)
             {
@@ -99,13 +114,10 @@ namespace Taxes.Services.Services
             {
                 taxEntity.Week = GetWeekOfYear(taxScheduler.DateTime);
             }
-            else if (taxScheduler.TaxType == TaxTypeEnum.Monthly)
-            {
-                taxEntity.Month = taxScheduler.DateTime.Month;
-            }
             else if (taxScheduler.TaxType == TaxTypeEnum.Daily)
             {
-                taxEntity.Date = taxScheduler.DateTime;
+                taxEntity.Month = taxScheduler.DateTime.Month;
+                taxEntity.Day = taxScheduler.DateTime.Day;
             }
 
             return taxEntity;

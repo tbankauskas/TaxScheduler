@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Taxes.Services.Dtos;
 using Taxes.Services.Services;
 using TaxScheduler.Models;
@@ -12,22 +11,36 @@ namespace TaxScheduler.Controllers
     [Route("api/[controller]")]
     public class TaxesSchedulerController : ControllerBase
     {
-        private readonly ILogger<TaxesSchedulerController> _logger;
         private readonly TaxSchedulerService _taxSchedulerService;
         private readonly MunicipalitiesService _municipalitiesService;
 
-        public TaxesSchedulerController(ILogger<TaxesSchedulerController> logger,
-            TaxSchedulerService taxSchedulerService,
-            MunicipalitiesService municipalitiesService
-            )
+        public TaxesSchedulerController(TaxSchedulerService taxSchedulerService, MunicipalitiesService municipalitiesService)
         {
-            _logger = logger;
             _taxSchedulerService = taxSchedulerService;
             _municipalitiesService = municipalitiesService;
         }
 
         [HttpPost]
         public async Task<ActionResult> Post(TaxSchedulerModel model)
+        {
+            return await SaveTax(model, true);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(TaxSchedulerModel model)
+        {
+            return await SaveTax(model, false);
+        }
+
+        [HttpGet]
+        [Route("{municipality}/{date}")]
+        public async Task<TaxSchedulerDto> Get(string municipality, DateTime date)
+        {
+            var result = await _taxSchedulerService.GetTaxByMunicipalityAndDate(municipality, date);
+            return result;
+        }
+
+        private async Task<ActionResult> SaveTax(TaxSchedulerModel model, bool isNew)
         {
             if (model.DateTime == DateTime.MinValue)
             {
@@ -42,29 +55,35 @@ namespace TaxScheduler.Controllers
             }
 
             var existingTax = await _taxSchedulerService.GetSpecificTax((int)municipalityId, model.TaxType, model.DateTime);
-            if (existingTax != null)
+            if (isNew)
             {
-                return BadRequest(
-                    "Can't create tax because it is already exists for provided municipality and tax type");
+                if (existingTax != null)
+                {
+                    return BadRequest(
+                        "Can't create tax because it is already exists for provided municipality and tax type");
+                }
+
+                await _taxSchedulerService.AddNewTax(new TaxSchedulerDto
+                {
+                    MunicipalityId = (int)municipalityId,
+                    TaxType = model.TaxType,
+                    DateTime = model.DateTime,
+                    TaxValue = model.TaxValue
+                });
+            }
+            else
+            {
+                if (existingTax == null)
+                {
+                    return BadRequest(
+                        "Can't update tax because it doesn't exists for provided municipality and tax type");
+                }
+
+                existingTax.TaxValue = model.TaxValue;
+                await _taxSchedulerService.UpdateExistingTax(existingTax);
             }
 
-            await _taxSchedulerService.AddNewTax(new TaxSchedulerDto
-            {
-                MunicipalityId = (int)municipalityId,
-                TaxType = model.TaxType,
-                DateTime = model.DateTime,
-                TaxValue = model.TaxValue
-            });
-
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("{municipality}/{date}")]
-        public async Task<TaxSchedulerDto> Get(string municipality, DateTime date)
-        {
-            var result = await _taxSchedulerService.GetTaxByMunicipalityAndDate(municipality, date);
-            return result;
         }
     }
 }

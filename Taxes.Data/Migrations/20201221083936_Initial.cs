@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Taxes.Data.Migrations
 {
@@ -44,7 +43,7 @@ namespace Taxes.Data.Migrations
                     Year = table.Column<int>(type: "int", nullable: false),
                     Month = table.Column<int>(type: "int", nullable: true),
                     Week = table.Column<int>(type: "int", nullable: true),
-                    Date = table.Column<DateTime>(type: "Datetime", nullable: true),
+                    Day = table.Column<int>(type: "int", nullable: true),
                     TaxValue = table.Column<decimal>(type: "decimal(2,2)", precision: 2, scale: 2, nullable: false)
                 },
                 constraints: table =>

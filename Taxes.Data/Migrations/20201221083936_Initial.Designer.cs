@@ -10,7 +10,7 @@ using Taxes.Data.Ef;
 namespace Taxes.Data.Migrations
 {
     [DbContext(typeof(TaxesDbContext))]
-    [Migration("20201220224537_Initial")]
+    [Migration("20201221083936_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,8 +47,8 @@ namespace Taxes.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("Datetime");
+                    b.Property<int?>("Day")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Month")
                         .HasColumnType("int");

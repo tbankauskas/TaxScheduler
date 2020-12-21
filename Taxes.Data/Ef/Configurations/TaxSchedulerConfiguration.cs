@@ -13,9 +13,6 @@ namespace Taxes.Data.Ef.Configurations
                 .IsRequired()
                 .HasColumnType("decimal")
                 .HasPrecision(2, 2);
-
-            builder.Property(x => x.Date)
-                .HasColumnType("Datetime");
         }
     }
 }
