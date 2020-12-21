@@ -20,20 +20,18 @@ namespace Taxes.Services.Services
             _dbContext = dbContext;
         }
 
-        public Task AddNewTax(TaxSchedulerDto taxScheduler)
+        public async Task AddNewTax(TaxSchedulerDto taxScheduler)
         {
             var taxEntity = CreateOrUpdateTaxScheduler(taxScheduler);
             _dbContext.TaxSchedulers.Add(taxEntity);
-            _dbContext.SaveChangesAsync();
-            return Task.CompletedTask;
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task UpdateExistingTax(TaxSchedulerDto taxScheduler)
+        public async Task UpdateExistingTax(TaxSchedulerDto taxScheduler)
         {
             var taxEntity = _dbContext.TaxSchedulers.First(x => x.TaxSchedulerId == taxScheduler.TaxSchedulerId);
             CreateOrUpdateTaxScheduler(taxScheduler, taxEntity);
-            _dbContext.SaveChangesAsync();
-            return Task.CompletedTask;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<TaxSchedulerDto> GetSpecificTax(int municipalityId, TaxTypeEnum taxType, DateTime date)

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Taxes.Data.Entities
+﻿namespace Taxes.Data.Entities
 {
     public class TaxScheduler
     {

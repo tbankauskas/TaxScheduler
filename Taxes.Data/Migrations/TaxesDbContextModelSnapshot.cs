@@ -58,8 +58,8 @@ namespace Taxes.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TaxValue")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
+                        .HasPrecision(4, 2)
+                        .HasColumnType("decimal(4,2)");
 
                     b.Property<int?>("Week")
                         .HasColumnType("int");

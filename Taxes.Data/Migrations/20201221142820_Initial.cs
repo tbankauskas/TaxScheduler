@@ -44,7 +44,7 @@ namespace Taxes.Data.Migrations
                     Month = table.Column<int>(type: "int", nullable: true),
                     Week = table.Column<int>(type: "int", nullable: true),
                     Day = table.Column<int>(type: "int", nullable: true),
-                    TaxValue = table.Column<decimal>(type: "decimal(2,2)", precision: 2, scale: 2, nullable: false)
+                    TaxValue = table.Column<decimal>(type: "decimal(4,2)", precision: 4, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {

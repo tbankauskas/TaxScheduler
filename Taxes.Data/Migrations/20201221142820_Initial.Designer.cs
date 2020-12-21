@@ -10,7 +10,7 @@ using Taxes.Data.Ef;
 namespace Taxes.Data.Migrations
 {
     [DbContext(typeof(TaxesDbContext))]
-    [Migration("20201221083936_Initial")]
+    [Migration("20201221142820_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,8 +60,8 @@ namespace Taxes.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TaxValue")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
+                        .HasPrecision(4, 2)
+                        .HasColumnType("decimal(4,2)");
 
                     b.Property<int?>("Week")
                         .HasColumnType("int");

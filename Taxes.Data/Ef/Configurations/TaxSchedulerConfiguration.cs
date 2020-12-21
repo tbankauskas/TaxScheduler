@@ -12,7 +12,7 @@ namespace Taxes.Data.Ef.Configurations
                 .Property(x => x.TaxValue)
                 .IsRequired()
                 .HasColumnType("decimal")
-                .HasPrecision(2, 2);
+                .HasPrecision(4, 2);
         }
     }
 }

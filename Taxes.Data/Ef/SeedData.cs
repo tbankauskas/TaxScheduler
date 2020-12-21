@@ -21,6 +21,17 @@ namespace Taxes.Data.Ef
             }
         }
 
+        public static async Task EnsureSeedData(TaxesDbContext dbContext)
+        {
+            dbContext.Database.Migrate();
+
+            if (!await dbContext.TaxTypes.AnyAsync())
+            {
+                await dbContext.TaxTypes.AddRangeAsync(GetTaxTypes());
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
         private static List<TaxType> GetTaxTypes()
         {
             return new List<TaxType>

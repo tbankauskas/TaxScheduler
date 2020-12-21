@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taxes.Data", "Taxes.Data\Ta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taxes.Services", "Taxes.Services\Taxes.Services.csproj", "{1219F567-3E8D-4EB5-A628-64355B0C6026}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8B1A4DAD-3202-489B-915F-34BBFA7DD7AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{A1BC89A9-4A84-4765-BBCA-03DD52DD84CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{1219F567-3E8D-4EB5-A628-64355B0C6026}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1219F567-3E8D-4EB5-A628-64355B0C6026}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1219F567-3E8D-4EB5-A628-64355B0C6026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BC89A9-4A84-4765-BBCA-03DD52DD84CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BC89A9-4A84-4765-BBCA-03DD52DD84CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BC89A9-4A84-4765-BBCA-03DD52DD84CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BC89A9-4A84-4765-BBCA-03DD52DD84CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A1BC89A9-4A84-4765-BBCA-03DD52DD84CD} = {8B1A4DAD-3202-489B-915F-34BBFA7DD7AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7CE66EAB-5F62-4BC5-97BA-52C233085A24}
