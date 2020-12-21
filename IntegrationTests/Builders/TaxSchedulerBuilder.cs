@@ -8,9 +8,9 @@ namespace IntegrationTests.Builders
         private int _municipalityId;
         private TaxTypeEnum _taxType;
         private int _year;
-        private int _month;
-        private int _week;
-        private int _day;
+        private int? _month;
+        private int? _week;
+        private int? _day;
         private decimal _taxValue;
 
         public override Entities.TaxScheduler Create()

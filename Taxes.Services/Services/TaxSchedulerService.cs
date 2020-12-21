@@ -73,8 +73,8 @@ namespace Taxes.Services.Services
             var result = await _dbContext.TaxSchedulers
                 .Where(x => x.Municipality.Name == munucipality &&
                             (x.Day == date.Day && x.Month == date.Month && x.Year == date.Year
-                             || x.Month == date.Month && x.Year == date.Year
-                             || x.Week == GetWeekOfYear(date) && x.Year == date.Year
+                             || x.Month == date.Month && x.Year == date.Year && x.Day == null
+                             || x.Week == GetWeekOfYear(date) && x.Year == date.Year && x.Day == null && x.Month == null
                              || x.Year == date.Year && x.Day == null && x.Month == null && x.Week == null))
                 .OrderBy(x => x.TaxType.Priority).FirstOrDefaultAsync();
             if (result == null)

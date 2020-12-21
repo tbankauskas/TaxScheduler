@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IntegrationTests.Builders;
 using IntegrationTests.Infrastructure;
 using IntegrationTests.Infrastructure.Utilities;
+using Taxes.Services.Dtos;
 using Taxes.Services.Enums;
 using TaxScheduler.Models;
 using Xunit;
@@ -133,6 +134,57 @@ namespace IntegrationTests.Tests
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Equal("Can't update tax because it doesn't exists for provided municipality and tax type",
                 await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact]
+        public async Task Get_should_return_tax()
+        {
+            // Arrange
+            var municipality = await new MunicipalityBuilder().SaveToDb();
+            await new TaxSchedulerBuilder()
+                .WithMunicipalityId(municipality.MunicipalityId)
+                .WithTaxType(TaxTypeEnum.Yearly)
+                .WithYear(2020)
+                .WithTaxValue(0.2m)
+                .SaveToDb();
+
+            await new TaxSchedulerBuilder()
+                .WithMunicipalityId(municipality.MunicipalityId)
+                .WithTaxType(TaxTypeEnum.Monthly)
+                .WithYear(2020)
+                .WithMonth(5)
+                .WithTaxValue(0.1m)
+                .SaveToDb();
+
+            await new TaxSchedulerBuilder()
+                .WithMunicipalityId(municipality.MunicipalityId)
+                .WithTaxType(TaxTypeEnum.Daily)
+                .WithYear(2020)
+                .WithMonth(5)
+                .WithDay(25)
+                .WithTaxValue(0.1m)
+                .SaveToDb();
+
+            await new TaxSchedulerBuilder()
+                .WithMunicipalityId(municipality.MunicipalityId)
+                .WithTaxType(TaxTypeEnum.Weekly)
+                .WithYear(2020)
+                .WithWeek(1)
+                .WithTaxValue(0.1m)
+                .SaveToDb();
+
+            // Act
+            var responseYearly = await HttpClient.GetJson<TaxSchedulerDto>($"{ApiUrl}Copenhagen/{DateTime.Now.Date.ToShortDateString()}");
+            var responseMonthly = await HttpClient.GetJson<TaxSchedulerDto>($"{ApiUrl}Copenhagen/{new DateTime(2020, 5, 1).ToShortDateString()}");
+            var responseDaily = await HttpClient.GetJson<TaxSchedulerDto>($"{ApiUrl}Copenhagen/{new DateTime(2020, 5, 25).ToShortDateString()}");
+            var responseWeekly = await HttpClient.GetJson<TaxSchedulerDto>($"{ApiUrl}Copenhagen/{new DateTime(2020, 1, 1).ToShortDateString()}");
+
+            // Assert
+
+            Assert.True(TaxTypeEnum.Yearly == responseYearly.TaxType);
+            Assert.True(TaxTypeEnum.Monthly == responseMonthly.TaxType);
+            Assert.True(TaxTypeEnum.Daily == responseDaily.TaxType);
+            Assert.True(TaxTypeEnum.Weekly == responseWeekly.TaxType);
         }
     }
 }
